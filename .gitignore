@@ -1,12 +1,8 @@
 .*.swp
 .*.bak
 .*~
-.git/
-.gitignore
-.rock.yml
+*.tar.gz
 blib/
-carton.lock
-cpanfile
 pm_to_blib
 Makefile
 MYMETA.json
