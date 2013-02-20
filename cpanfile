@@ -1,2 +1,0 @@
-requires 'Dancer';
-requires 'YAML';
