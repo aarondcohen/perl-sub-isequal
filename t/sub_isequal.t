@@ -6,10 +6,12 @@ use warnings;
 use FindBin ();
 use lib "$FindBin::Bin/../lib";
 
-use Test::Most tests => 26;
+use Test::Most tests => 27;
 
 my $class = 'Sub::IsEqual';
 use_ok $class, 'is_equal';
+#
+#sub is_equal { $_[0] ~~ $_[1] }
 
 ok is_equal(undef, undef), 'Undef equals itself';
 ok ! is_equal(undef, 'some defined value'), 'Undef does not equals a defined value';
@@ -48,11 +50,16 @@ $arr1->[0] = $arr3;
 $arr3->[0] = $arr1;
 ok ! is_equal($arr1, $arr2), 'Differing cross-referencing nested structures are detectable';
 
-TODO: {
-	local $TODO = 'More advanced circular references';
-
+do {
 	my ($circular1, $circular2) = ([], []);
 	@$circular1 = (1, 2, $circular1);
+	@$circular2 = (1, 2, $circular1);
+	ok is_equal($circular1, $circular2), 'Equivalent structures leading to the same circular references are equal';
+};
+
+do {
+	my ($circular1, $circular2) = ([], []);
+	@$circular1 = (1, 2, $circular2);
 	@$circular2 = (1, 2, $circular1);
 	ok is_equal($circular1, $circular2), 'Equivalent structures leading to equivalent circular references are equal';
 };
